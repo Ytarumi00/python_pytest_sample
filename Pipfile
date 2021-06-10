@@ -12,9 +12,13 @@ pytest = "*"
 pytest-cov = "*"
 nose = "*"
 emaillib = "*"
+freezegun = "*"
 
 [dev-packages]
 
 [scripts]
 doctest = "pytest --doctest-modules ./sample_lib"
-test = "pytest ./test"
+test = "pytest ./test --durations=10"
+test-pdb = "pytest ./test --durations=10 --pdb"
+test-cov = "pytest ./test --cov=./sample_lib --cov-report=term-missing"
+test-cov-html = "pytest ./test --cov=./sample_lib --cov-report=html"

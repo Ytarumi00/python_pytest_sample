@@ -4,6 +4,8 @@
 """
 
 
+from datetime import date, datetime, timedelta
+from freezegun import freeze_time
 import pytest
 
 
@@ -43,6 +45,32 @@ def test_skip():
     アノテーションでテストのスキップをできる
     """
     assert 1 == 2
+
+
+def is_even(num):
+    """パラメータテスト用メソッド
+
+    引数が偶数かを判定する
+
+    Args:
+        num ([int]): 引数
+
+    Returns:
+        [boolean]: 判定結果
+    """
+    return True if num % 2 == 0 else False
+
+
+@pytest.mark.parametrize(('number', 'expected'), [
+    (1, False),
+    (2, True),
+    (3, True),  # error
+    (111, False),
+    (112, True),
+    (113, True)  # error
+])
+def test_parameter(number, expected):
+    assert is_even(number) == expected
 
 
 class Fruit:
@@ -120,3 +148,36 @@ class TestSample:
     # 失敗する
     def test_sampole_2(self, sample_fixture):
         assert 1 in sample_fixture
+
+
+class UnfinishedClass:
+    """ Mockテストのサンプルクラス
+    """
+    def foo():
+        pass
+
+
+def test_mock(monkeypatch):
+    """Mockテストを実行
+
+    Args:
+        monkeypatch ([type]): Mockテストメソッドには引数にこれを指定する
+    """
+    def run_mock(arg):
+        return 3
+
+    # monkeypatchを利用してメソッド差し替え(lamdbaを使ってもできる)
+    monkeypatch.setattr(UnfinishedClass, "foo", run_mock)
+    sut = UnfinishedClass()
+    assert 3 == sut.foo()
+
+
+def test_freeze_time():
+    """時間指定してテスト
+    """
+    now = datetime.now()
+
+    with freeze_time(now) as frozen_time:
+        assert datetime.now() == now
+        frozen_time.tick(timedelta(seconds=1))
+        assert datetime.now() == now + timedelta(seconds=1)
