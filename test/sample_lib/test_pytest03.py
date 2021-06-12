@@ -32,3 +32,10 @@ def test_sample_3(sample_fixture2):
     """
     num, expect = sample_fixture2
     assert sample.sum(*num) == expect
+
+
+def test_sample_4(sample_fixture3):
+    """fixtureを使って複数のテストケースを実行
+    """
+    num, expect = sample_fixture3
+    assert sample.sum(*num) == expect
