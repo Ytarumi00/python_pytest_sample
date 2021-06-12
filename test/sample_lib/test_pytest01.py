@@ -138,15 +138,15 @@ def test_sample(client):
     client.send('message')
 
 
-@pytest.mark.usefixtures("sample_fixture")
+@pytest.mark.usefixtures("sample_fixture1")
 class TestSample:
     # conftest.pyで設定したfixtureをclassでまとめて複数のテストに実行
     # 成功する
-    def test_sampole_1(self, sample_fixture):
+    def test_sampole_1(self, sample_fixture1):
         assert 2 in sample_fixture
 
     # 失敗する
-    def test_sampole_2(self, sample_fixture):
+    def test_sampole_2(self, sample_fixture1):
         assert 1 in sample_fixture
 
 
